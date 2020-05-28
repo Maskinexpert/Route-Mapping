@@ -1,5 +1,6 @@
 from random import seed
 from random import randint
+
 seed()
 import math
 #TODO: 
@@ -32,7 +33,7 @@ class RouteMapper:
     
   def addRoute(self,u,v,baseLength = 30000):
     if u in self.celBodies and v in self.celBodies:
-      if (r.celBodies[v].isMoon != True and r.celBodies[u].isMoon != True) or r.route_marker[r.celBodies[u].parent] == r.route_marker[v]:
+      if (r.celBodies[v].isMoon != True and r.celBodies[u].isMoon != True) or r.route_marker[r.celBodies[u].parent] == r.route_marker[v] or r.route_marker[r.celBodies[u].parent] == r.route_marker[r.celBodies[v].parent]:
         self.routes[self.route_marker[u]][self.route_marker[v]] = baseLength
         self.routes[self.route_marker[v]][self.route_marker[u]] = baseLength
       elif r.celBodies[u].isMoon != True:
@@ -198,7 +199,7 @@ def uniBuilder(s = 2):
 r = RouteMapper()
 
 #print(uniBuilder()[0])
-
+#uniBuilder()
 #To show the routes the ugly way
 #print(uniBuilder()[0])
 

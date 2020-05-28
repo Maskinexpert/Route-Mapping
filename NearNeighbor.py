@@ -1,13 +1,4 @@
-#Temp for testing
-import UniverseBuilder as u
-uniStore = u.uniBuilder()
-routeList = uniStore[0]
-#routeMarkerKeys = uniStore[1]
-routeMarkers = uniStore[2]
-#hiarchy = uniStore[3]
-#
-
-
+### Takes UniverseBuilder[0],[1] as input ###
 def nearNeighbour(uRoute, freshRouteKeys):
   unvisited = dict(freshRouteKeys)
   unvisited.pop("Pl0")
@@ -27,8 +18,6 @@ def nearNeighbour(uRoute, freshRouteKeys):
   #Distance from last planet directly to "Pl0"
   #totalDistance += uRoute[location][0]
   return (finalRoute, totalDistance)
-
-print(nearNeighbour(routeList,routeMarkers))
 
 
 
