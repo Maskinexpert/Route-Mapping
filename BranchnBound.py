@@ -20,6 +20,7 @@ for items in range(0,tempLength):
 for slot1 in range(0,len(tempArr)):
   for slot in range(tempLength,len(routeList)):
     tempArr[slot1].pop(tempLength)
+currentParentNumber = 0
 for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
   if (tempArrMoon != []):
     if (hiarchy[moons].parent == previousParent):
@@ -112,6 +113,14 @@ def recursiveStepBnB(uRoute,startLocation,parent,currentDepth):
   level = currentDepth + 1
   stepList = listCopier(uRoute)
   removeNode(stepList,startLocation,nodeTree[parent].n)
+#  for v in stepList:
+#    for el in v:
+#      print(str(el).rjust(6,' ')+' ', end = '')
+#    print(' ')
+#  for kl in range(0,2):
+#    for lkj in range(0,len(stepList)):
+#      print('_', end = '')
+#  print(" ")
   stepList, stepCost = reducer(stepList)
   stepCost += (nodeTree[parent].c + nodeTree[parent].m[nodeTree[parent].n][startLocation])
   if stepCost == maxsize:
@@ -142,14 +151,15 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
   nodeTree[0] = node(0, 0, reducedTable, cost, 0)
   for nodes in range(1,len(uRoutePl)):
     recursiveStepBnB(nodeTree[0].m,nodes,nodeTree[0].l,0)
+  global upperBound
   for keys in nodeTree:
-    if nodeTree[keys].c == upperBound and nodeTree[keys].d == len(tempArr)-1:
+    if nodeTree[keys].c == upperBound and nodeTree[keys].d == len(uRoutePl)-1:
       lastNode = nodeTree[keys].l
+      finalRouteAll.extend(pathBuilder(lastNode, len(uRoutePl)-1))
       break
-  finalRouteAll.extend(pathBuilder(lastNode, len(uRoutePl)-1))
+  
   moonTours = []
   for items in range(0,len(uRouteMn)):
-    global upperBound
     upperBound = maxsize
     nodeTree = {}
     uRouteMn[items] = [items] + uRouteMn[items]
@@ -158,25 +168,33 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
     for sectorRow in range(0,len(uRouteMn[items])):
       moonTempArray = []
       for sectorCol in range(0,len(uRouteMn[items])):
-        moonTempArray.append(uRouteList[uRouteMn[sectorRow]][uRouteMn[sectorCol]])
+        moonTempArray.append(uRouteList[uRouteMn[items][sectorRow]][uRouteMn[items][sectorCol]])
       moonArray.append(list(moonTempArray))
+    for elementRow in range(0,len(moonArray)):
+      for elementCol in range(0,len(moonArray[elementRow])):
+        if moonArray[elementRow][elementCol] == 0:
+          moonArray[elementRow][elementCol] = maxsize
     reducedMoonTable, moonCost = reducer(moonArray)
-    nodeTree[0] = node(0, items, reducedMoonTable, moonCost, 0)
+    nodeTree[0] = node(0, 0, reducedMoonTable, moonCost, 0)
     for nodes in range(1,len(moonArray)):
       recursiveStepBnB(nodeTree[0].m,nodes,nodeTree[0].l,0)
     for keys in nodeTree:
       if nodeTree[keys].c == upperBound and nodeTree[keys].d == len(moonArray)-1:
         lastNode = nodeTree[keys].l
+        moons = pathBuilder(lastNode, len(moonArray)-1)
+        convertedMoons = []
+        for moonIndex in moons:
+          convertedMoons.append(uRouteMn[items][moonIndex])
+        finalRouteAll[finalRouteAll.index(items)+1:1] = convertedMoons
         break
-    moons = pathBuilder(lastNode, len(moonArray)-1)
-    finalRouteAll[finalRouteAll.index(items)+1:1] = moons
+    
   finalRouteWeight = weightCal(finalRouteAll,uRouteList)
   
-  return finalRouteAll
+  return finalRouteAll, finalRouteWeight
   
-c = branchnBound(tempArr,0)
+c = branchnBound(tempArr,tempArrMoon, routeList)
 
-
+print(c)
 #detert = nodeTree[nodeTree[nodeTree[lastNode].p[0]].p[0]].m
 #detert2 = nodeTree[nodeTree[lastNode].p[0]].m
 #print(c)
