@@ -1,34 +1,34 @@
 #Temp for testing
-import UniverseBuilder as u
-uniStore = u.uniBuilder()
-routeList = uniStore[0]
+#import UniverseBuilder as u
+#uniStore = u.uniBuilder()
+#routeList = uniStore[0]
 #routeMarkerKeys = uniStore[1]
-routeMarkers = uniStore[2]
-hiarchy = uniStore[3]
-tempLength = routeMarkers['Mn0']
-tempArr = []
-tempArrMoon = []
+#routeMarkers = uniStore[2]
+#hiarchy = uniStore[3]
+#tempLength = routeMarkers['Mn0']
+#tempArr = []
+#tempArrMoon = []
 
-tempArr = routeList[:]
-for items in range(tempLength,len(tempArr)):
-  tempArr.pop(tempLength)
-for slot1 in range(0,len(tempArr)):
-  for slot in range(tempLength,len(tempArr[0])):
-    tempArr[slot1].pop(tempLength)
+#for items in range(0,tempLength):
+#  tempArr.append(list(routeList[items]))
+#for slot1 in range(0,len(tempArr)):
+#  for slot in range(tempLength,len(routeList)):
+#    tempArr[slot1].pop(tempLength)
+#print(tempArr)
 
 
-currentParentNumber = 0
-for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
-  if (tempArrMoon != []):
-    if (hiarchy[moons].parent == previousParent):
-      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
-    else:
-      currentParentNumber += 1
-      tempArrMoon.append([routeMarkers[moons]])
-  else:
-    tempArrMoon.append([routeMarkers[moons]])
+#currentParentNumber = 0
+#for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
+#  if (tempArrMoon != []):
+#    if (hiarchy[moons].parent == previousParent):
+#      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
+#    else:
+#      currentParentNumber += 1
+#      tempArrMoon.append([routeMarkers[moons]])
+#  else:
+#    tempArrMoon.append([routeMarkers[moons]])
 
-  previousParent = hiarchy[moons].parent 
+#  previousParent = hiarchy[moons].parent 
 ####
 
 
@@ -169,7 +169,6 @@ def christofidesMoons(uRouteList,moonParent,moonList):
     else:
       location = finalRouteMoon[finalRouteMoon.index(location)-1]
   finalRouteMoon.pop(0)
-  print(finalRouteMoon)
   return finalRouteMoon
 ### 
 def christofides(uRoutePlanets, uRouteMoons, uRouteList):
@@ -181,6 +180,6 @@ def christofides(uRoutePlanets, uRouteMoons, uRouteList):
     finalRouteAll[finalRouteAll.index(sectors)+1:1] = moons
   for length in range(1,len(finalRouteAll)):
     totalLength += uRouteList[finalRouteAll[length-1]][finalRouteAll[length]]
-  return totalLength,finalRouteAll
+  return finalRouteAll,totalLength
 
-print(christofides(tempArr,tempArrMoon,routeList))
+#print(christofides(tempArr,tempArrMoon,routeList))

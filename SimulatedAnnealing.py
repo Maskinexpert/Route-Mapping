@@ -1,30 +1,30 @@
 #Temp for testing
-import UniverseBuilder as u
-uniStore = u.uniBuilder()
-routeList = uniStore[0]
+#import UniverseBuilder as u
+#uniStore = u.uniBuilder()
+#routeList = uniStore[0]
 #routeMarkerKeys = uniStore[1]
-routeMarkers = uniStore[2]
-hiarchy = uniStore[3]
-tempLength = routeMarkers['Mn0']
+#routeMarkers = uniStore[2]
+#hiarchy = uniStore[3]
+#tempLength = routeMarkers['Mn0']
 #tempArr = []
-tempArrMoon = []
+#tempArrMoon = []
 
-listOfPlanets = []
-for i in range(0,tempLength):
-  listOfPlanets.append(i)
+#listOfPlanets = []
+#for i in range(0,tempLength):
+#  listOfPlanets.append(i)
 ### 2d array of moons each with same parent ###
-currentParentNumber = 0
-for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
-  if (tempArrMoon != []):
-    if (hiarchy[moons].parent == previousParent):
-      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
-    else:
-      currentParentNumber += 1
-      tempArrMoon.append([routeMarkers[moons]])
-  else:
-    tempArrMoon.append([routeMarkers[moons]])
+#currentParentNumber = 0
+#for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
+#  if (tempArrMoon != []):
+#    if (hiarchy[moons].parent == previousParent):
+#      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
+#    else:
+#      currentParentNumber += 1
+#      tempArrMoon.append([routeMarkers[moons]])
+#  else:
+#    tempArrMoon.append([routeMarkers[moons]])
 
-  previousParent = hiarchy[moons].parent 
+#  previousParent = hiarchy[moons].parent 
 ####
 
 
@@ -88,7 +88,10 @@ def simAnneal(planetList,moonList,uRouteList,plIterations,mnIterations):
     moons = simAnnealCal(moonList[items],uRouteList,items,mnIterations)
     moons.pop(0)
     finalTourAll[finalTourAll.index(items)+1:1] = moons
-  finalTourWeight = weightCal(finalTourAll,uRouteList)
+  finalTourWeight = 0
+  for xSA in range(0,len(finalTourAll)-1):
+    finalTourWeight += uRouteList[finalTourAll[xSA]][finalTourAll[xSA+1]]
+  #finalTourWeight = weightCal(finalTourAll,uRouteList)
   return finalTourAll,finalTourWeight
   
-print(simAnneal(listOfPlanets,tempArrMoon,routeList,7,4))
+#print(simAnneal(listOfPlanets,tempArrMoon,routeList,7,4))

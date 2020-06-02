@@ -174,5 +174,5 @@ def clarkeWright (uRoutePlanets, uRouteMoons, uRouteList):
         break
   
   
-  return weight, cwRoute
-print(clarkeWright(tempArr,tempArrMoon,routeList))
+  return cwRoute, weight
+#print(clarkeWright(tempArr,tempArrMoon,routeList))

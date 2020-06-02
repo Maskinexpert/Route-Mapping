@@ -34,54 +34,49 @@
 
 #  previousParent = hiarchy[moons].parent 
 ####
+
+
 from random import sample
 
 
 def weightCal(tour,uRouteList):
   totalLength = 0
   for length in range(0,len(tour)-1):
-    try:
-      totalLength += uRouteList[length][length+1]
-    except:
-      print(length)
+    totalLength += uRouteList[length][length+1]
   return totalLength
 
-def kOptCal(tour,uRouteList,startingLocation):
+def twoOptCal(tour,uRouteList,startingLocation):
   indexStore = []
   mixedRandomTour = sample(tour,len(tour))
   mixedRandomTour.insert(0,mixedRandomTour.pop(mixedRandomTour.index(startingLocation)))
   Tmark = mixedRandomTour[:]
-  change = True
   for i in range(1,len(mixedRandomTour)-1):
     for k in range(i+1,len(mixedRandomTour)):
        indexStore.append([mixedRandomTour[i],mixedRandomTour[k]])
-  while change == True:
-    change = False
-    Tbest = Tmark
-    for items in indexStore:
-      randomTour = Tmark[:]
-      randomTourIndexStore = mixedRandomTour.index(items[0])
-      randomTour[randomTour.index(items[1])]= items[0]
-      randomTour[randomTourIndexStore] = items[1]
-      if weightCal(randomTour,uRouteList) < weightCal(Tbest,uRouteList):
-        Tbest = randomTour
-        change = True
-    Tmark = Tbest
+  Tbest = Tmark
+  for items in indexStore:
+    randomTour = Tmark[:]
+    randomTourIndexStore = mixedRandomTour.index(items[0])
+    randomTour[randomTour.index(items[1])]= items[0]
+    randomTour[randomTourIndexStore] = items[1]
+    if weightCal(randomTour,uRouteList) < weightCal(Tbest,uRouteList):
+      Tbest = randomTour
+  Tmark = Tbest
   return Tmark
 ### Takes list of planet indexes, list of moon indexes, and full routeList ###
-def kOpt(planetList,moonList,uRouteList):
-  planetBest = kOptCal(planetList,uRouteList,0)
+def twoOpt(planetList,moonList,uRouteList):
+  planetBest = twoOptCal(planetList,uRouteList,0)
   finalTourAll = planetBest
   moonTours = []
   for items in range(0,len(planetBest)):
     moonListCopy = list(moonList[items])
     moonListCopy.append(items)
-    moons = kOptCal(moonListCopy,uRouteList,items)
+    moons = twoOptCal(moonListCopy,uRouteList,items)
     moons.pop(0)
     finalTourAll[finalTourAll.index(items)+1:1] = moons
   finalTourWeight = 0
-  for xKO in range(0,len(finalTourAll)-1):
-    finalTourWeight += uRouteList[finalTourAll[xKO]][finalTourAll[xKO+1]]
+  for xTO in range(0,len(finalTourAll)-1):
+    finalTourWeight += uRouteList[finalTourAll[xTO]][finalTourAll[xTO+1]]
   #finalTourWeight = weightCal(finalTourAll,uRouteList)
   return finalTourAll,finalTourWeight
 #print(kOpt(listOfPlanets,tempArrMoon,routeList))

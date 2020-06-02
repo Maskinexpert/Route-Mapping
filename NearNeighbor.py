@@ -1,5 +1,8 @@
 ### Takes UniverseBuilder[0],[1] as input ###
-def nearNeighbour(uRoute, freshRouteKeys):
+def nearNeighbour(uRouteInput, freshRouteKeys):
+  uRoute = []
+  for items in range(0,len(uRouteInput)):
+    uRoute.append(list(uRouteInput[items]))
   unvisited = dict(freshRouteKeys)
   unvisited.pop("Pl0")
   finalRoute = ["Pl0"]
@@ -15,8 +18,6 @@ def nearNeighbour(uRoute, freshRouteKeys):
         finalRoute.append(k)
         unvisited.pop(k)
         break
-  #Distance from last planet directly to "Pl0"
-  #totalDistance += uRoute[location][0]
   return (finalRoute, totalDistance)
 
 

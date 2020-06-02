@@ -1,37 +1,37 @@
-import copy
+
 #Temp for testing
-import UniverseBuilder as u
-uniStore = u.uniBuilder()
-routeList = uniStore[0]
+#import UniverseBuilder as u
+#uniStore = u.uniBuilder()
+#routeList = uniStore[0]
 #routeMarkerKeys = uniStore[1]
-routeMarkers = uniStore[2]
-hiarchy = uniStore[3]
-tempLength = routeMarkers['Mn0']
-tempArr = []
-tempArrMoon = []
+#routeMarkers = uniStore[2]
+#hiarchy = uniStore[3]
+#tempLength = routeMarkers['Mn0']
+#tempArr = []
+#tempArrMoon = []
 #def listCopier(uRoute,startEnd):
 #  tempArr = []
 #  for items in range(startEnd[0],startEnd[1]):
 #    tempArr.append(list(uRoute[items]))
 #  return tempArr
 
-for items in range(0,tempLength):
-  tempArr.append(list(routeList[items]))
-for slot1 in range(0,len(tempArr)):
-  for slot in range(tempLength,len(routeList)):
-    tempArr[slot1].pop(tempLength)
-currentParentNumber = 0
-for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
-  if (tempArrMoon != []):
-    if (hiarchy[moons].parent == previousParent):
-      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
-    else:
-      currentParentNumber += 1
-      tempArrMoon.append([routeMarkers[moons]])
-  else:
-    tempArrMoon.append([routeMarkers[moons]])
+#for items in range(0,tempLength):
+#  tempArr.append(list(routeList[items]))
+#for slot1 in range(0,len(tempArr)):
+#  for slot in range(tempLength,len(routeList)):
+#    tempArr[slot1].pop(tempLength)
+#currentParentNumber = 0
+#for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
+#  if (tempArrMoon != []):
+#    if (hiarchy[moons].parent == previousParent):
+#      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
+#    else:
+#      currentParentNumber += 1
+#      tempArrMoon.append([routeMarkers[moons]])
+#  else:
+#    tempArrMoon.append([routeMarkers[moons]])
 
-  previousParent = hiarchy[moons].parent
+#  previousParent = hiarchy[moons].parent
 #### 2d array of moon plus parent planet distances  
 #for sections in tempArrMoon:
 #  for items2 in range(0,len(tempArrMoon[sections])):
@@ -54,11 +54,11 @@ class node:
     self.d = depth
     self.p = parent
 
-def weightCal(tour,uRouteList):
-  totalLength = 0
-  for length in range(0,len(tour)-1):
-    totalLength += uRouteList[length][length+1]
-  return totalLength
+def weightCalBnB(tour,uRouteList):
+  totalLengthBnB = 0
+  for lengthBnB in range(0,len(tour)-1):
+    totalLengthBnB += uRouteList[lengthBnB][lengthBnB+1]
+  return totalLengthBnB
 
 def listCopier(uRoute):
   tempArr = []
@@ -162,13 +162,14 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
   for items in range(0,len(uRouteMn)):
     upperBound = maxsize
     nodeTree = {}
-    uRouteMn[items] = [items] + uRouteMn[items]
+    uRouteMnCopy = list(uRouteMn[items])
+    uRouteMnCopy = [items] + uRouteMnCopy
     moonArray = []
     moonTempArray = []
-    for sectorRow in range(0,len(uRouteMn[items])):
+    for sectorRow in range(0,len(uRouteMnCopy)):
       moonTempArray = []
-      for sectorCol in range(0,len(uRouteMn[items])):
-        moonTempArray.append(uRouteList[uRouteMn[items][sectorRow]][uRouteMn[items][sectorCol]])
+      for sectorCol in range(0,len(uRouteMnCopy)):
+        moonTempArray.append(uRouteList[uRouteMnCopy[sectorRow]][uRouteMnCopy[sectorCol]])
       moonArray.append(list(moonTempArray))
     for elementRow in range(0,len(moonArray)):
       for elementCol in range(0,len(moonArray[elementRow])):
@@ -184,17 +185,19 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
         moons = pathBuilder(lastNode, len(moonArray)-1)
         convertedMoons = []
         for moonIndex in moons:
-          convertedMoons.append(uRouteMn[items][moonIndex])
+          convertedMoons.append(uRouteMnCopy[moonIndex])
         finalRouteAll[finalRouteAll.index(items)+1:1] = convertedMoons
         break
-    
-  finalRouteWeight = weightCal(finalRouteAll,uRouteList)
+  finalRouteWeight = 0
+  for xBnB in range(0,len(finalRouteAll)-1):
+    finalRouteWeight += uRouteList[finalRouteAll[xBnB]][finalRouteAll[xBnB+1]]
+  #finalRouteWeight = weightCalBnB(finalRouteAll,uRouteList)
   
   return finalRouteAll, finalRouteWeight
   
-c = branchnBound(tempArr,tempArrMoon, routeList)
+#c = branchnBound(tempArr,tempArrMoon, routeList)
 
-print(c)
+#print(c)
 #detert = nodeTree[nodeTree[nodeTree[lastNode].p[0]].p[0]].m
 #detert2 = nodeTree[nodeTree[lastNode].p[0]].m
 #print(c)
