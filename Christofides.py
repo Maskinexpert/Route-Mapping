@@ -1,61 +1,32 @@
-#Temp for testing
-#import UniverseBuilder as u
-#uniStore = u.uniBuilder()
-#routeList = uniStore[0]
-#routeMarkerKeys = uniStore[1]
-#routeMarkers = uniStore[2]
-#hiarchy = uniStore[3]
-#tempLength = routeMarkers['Mn0']
-#tempArr = []
-#tempArrMoon = []
-
-#for items in range(0,tempLength):
-#  tempArr.append(list(routeList[items]))
-#for slot1 in range(0,len(tempArr)):
-#  for slot in range(tempLength,len(routeList)):
-#    tempArr[slot1].pop(tempLength)
-#print(tempArr)
-
-
-#currentParentNumber = 0
-#for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
-#  if (tempArrMoon != []):
-#    if (hiarchy[moons].parent == previousParent):
-#      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
-#    else:
-#      currentParentNumber += 1
-#      tempArrMoon.append([routeMarkers[moons]])
-#  else:
-#    tempArrMoon.append([routeMarkers[moons]])
-
-#  previousParent = hiarchy[moons].parent 
-####
-
+# This algorithm takes an array of routes between only the planets, 2d list of moons sorted into groups with the same parent, full route list.
+# Throughout the program are comments containing time complexities (as Big O notation) for a certain section or operation. 
+  # These only occur when a section have a time complexity that isn't constant, as it is only these that will be taken into account when discussing run time.
+  # When discussing time complexity, n = amount of moon inputs given to christofidesMoons, m = mst edges for moons, p = amount of planets, q = mst edges for planets 
 
 import Kruskal as kru
 
 def christofidesPlanets(uRoutePlanets):
   oddNodeCounter = []
-  oddNodeArray =[]
+  oddNodeArray = []
   oddNodeRoutes = []
-  mstGraph = kru.kruskal(uRoutePlanets)
-  for edges in range(0,len(mstGraph[0])+1):
+  mstGraph = kru.kruskal(uRoutePlanets) # O(p log p) (since time complexity of kruskal is O(E log V) and E = SUM(i = 1,p,i+=1) = (some constant c)*p = O(n))
+  for edges in range(0,len(mstGraph[0])+1): # O(p)
     oddNodeCounter.append(0)
-  for edges in range(0,len(mstGraph[0])):
+  for edges in range(0,len(mstGraph[0])): # O(q)
     oddNodeCounter[mstGraph[0][edges][0]] += 1
     oddNodeCounter[mstGraph[0][edges][1]] += 1
-  for i in range(0,len(oddNodeCounter)):
+  for i in range(0,len(oddNodeCounter)): # O(p)
     if (oddNodeCounter[i]%2) == 1:
       oddNodeArray.append(i)
-  for j in range(0,len(oddNodeArray)-1):
-    for k in range(j+1,len(oddNodeArray)):
+  for j in range(0,len(oddNodeArray)-1): # O(p^2) (worst case where all nodes have odd number of edges attached)
+    for k in range(j+1,len(oddNodeArray)): # O(p)
       oddNodeRoutes.append([uRoutePlanets[oddNodeArray[j]][oddNodeArray[k]],oddNodeArray[j],oddNodeArray[k]])
-  oddNodeRoutes = sorted(oddNodeRoutes)
+  oddNodeRoutes = sorted(oddNodeRoutes) # O(p)
   nodes = [oddNodeRoutes[0][1],oddNodeRoutes[0][2]]
   mstGraph[0].append((oddNodeRoutes[0][1],oddNodeRoutes[0][2]))
   stopped = False
-  for m in range(1,len(oddNodeRoutes)):
-    for n in range(0,len(nodes)):
+  for m in range(1,len(oddNodeRoutes)): # O(p)
+    for n in range(0,len(nodes)): # O(p) (worst case where all nodes 
       if (nodes[n] in oddNodeRoutes[m]):
         stopped = True
         break

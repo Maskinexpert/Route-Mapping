@@ -1,18 +1,4 @@
-#Temp for testing
-#import UniverseBuilder as u
-#uniStore = u.uniBuilder()
-#routeList = uniStore[0]
-#routeMarkers = uniStore[2]
-#tempLength = routeMarkers['Mn0']
-#tempArr = []
-
-#for items in range(0,tempLength):
-#  tempArr.append(routeList[items])
-#  for slot in range(tempLength,len(routeList[items])):
-#    tempArr[items].pop(tempLength)
-
-
-
+# # # # # # A supporting module for the Christofides algorithm # # # # # #
 ## Takes only planets array/moon with same parent of UniverseBuilder[0] ##
 # # # # # # # # Too many data points with full edge matrix # # # # # # # #
               ##############################################
