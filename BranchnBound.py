@@ -1,44 +1,8 @@
-
-#Temp for testing
-#import UniverseBuilder as u
-#uniStore = u.uniBuilder()
-#routeList = uniStore[0]
-#routeMarkerKeys = uniStore[1]
-#routeMarkers = uniStore[2]
-#hiarchy = uniStore[3]
-#tempLength = routeMarkers['Mn0']
-#tempArr = []
-#tempArrMoon = []
-#def listCopier(uRoute,startEnd):
-#  tempArr = []
-#  for items in range(startEnd[0],startEnd[1]):
-#    tempArr.append(list(uRoute[items]))
-#  return tempArr
-
-#for items in range(0,tempLength):
-#  tempArr.append(list(routeList[items]))
-#for slot1 in range(0,len(tempArr)):
-#  for slot in range(tempLength,len(routeList)):
-#    tempArr[slot1].pop(tempLength)
-#currentParentNumber = 0
-#for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl")):
-#  if (tempArrMoon != []):
-#    if (hiarchy[moons].parent == previousParent):
-#      tempArrMoon[currentParentNumber].append(routeMarkers[moons])
-#    else:
-#      currentParentNumber += 1
-#      tempArrMoon.append([routeMarkers[moons]])
-#  else:
-#    tempArrMoon.append([routeMarkers[moons]])
-
-#  previousParent = hiarchy[moons].parent
-#### 2d array of moon plus parent planet distances  
-#for sections in tempArrMoon:
-#  for items2 in range(0,len(tempArrMoon[sections])):
-    
-
-
-
+# This algorithm takes an list of planets, 2d list of moons sorted into rows with the same parent, full route list.
+# Throughout the program are comments containing time complexities (as Big O notation) for a certain section or operation. 
+  # These only occur when a section have a time complexity that isn't constant, as it is only these that will be taken into account when discussing run time.
+  # When discussing time complexity, n = amount of moon inputs, m = all possible routes for moons, p = amount of planet nodes,
+                                   # q = all possible routes for the set of planets, a = all nodes in the route list
 import math 
 maxsize = float('inf') 
 nodeTree = {}
@@ -56,36 +20,38 @@ class node:
 
 def weightCalBnB(tour,uRouteList):
   totalLengthBnB = 0
-  for lengthBnB in range(0,len(tour)-1):
+  for lengthBnB in range(0,len(tour)-1): # O(p)
     totalLengthBnB += uRouteList[lengthBnB][lengthBnB+1]
+  # O(p)
   return totalLengthBnB
 
 def listCopier(uRoute):
   tempArr = []
-  for items in range(0,len(uRoute)):
+  for items in range(0,len(uRoute)): # O(a)
     tempArr.append(list(uRoute[items]))
+  # O(a)
   return tempArr
 
 
 def reducer(uRoute):
   #First rows
   reducedWeight = 0
-  for i in range(0,len(uRoute)):
-    rowSmall = min(uRoute[i])
+  for i in range(0,len(uRoute)): # O(p^2)
+    rowSmall = min(uRoute[i]) # O(p)
     if rowSmall == maxsize:
       continue
     reducedWeight += rowSmall
-    for k in range(0,len(uRoute[i])):
+    for k in range(0,len(uRoute[i])): # O(p)
       uRoute[i][k] -= rowSmall
   #Then coloumns
-  for j in range(0,len(uRoute)):
+  for j in range(0,len(uRoute)): # O(p^2)
     colSmall = maxsize
-    for l in range(0,len(uRoute)):
+    for l in range(0,len(uRoute)): # O(p)
       if uRoute[l][j] < colSmall:
         colSmall = uRoute[l][j]
     if colSmall == maxsize:
       continue
-    for m in range(0,len(uRoute)):
+    for m in range(0,len(uRoute)): # O(p)
       uRoute[m][j] -= colSmall
     reducedWeight += colSmall
   return uRoute,reducedWeight
@@ -113,14 +79,6 @@ def recursiveStepBnB(uRoute,startLocation,parent,currentDepth):
   level = currentDepth + 1
   stepList = listCopier(uRoute)
   removeNode(stepList,startLocation,nodeTree[parent].n)
-#  for v in stepList:
-#    for el in v:
-#      print(str(el).rjust(6,' ')+' ', end = '')
-#    print(' ')
-#  for kl in range(0,2):
-#    for lkj in range(0,len(stepList)):
-#      print('_', end = '')
-#  print(" ")
   stepList, stepCost = reducer(stepList)
   stepCost += (nodeTree[parent].c + nodeTree[parent].m[nodeTree[parent].n][startLocation])
   if stepCost == maxsize:
@@ -157,7 +115,6 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
       lastNode = nodeTree[keys].l
       finalRouteAll.extend(pathBuilder(lastNode, len(uRoutePl)-1))
       break
-  
   moonTours = []
   for items in range(0,len(uRouteMn)):
     upperBound = maxsize
@@ -191,21 +148,6 @@ def branchnBound(uRoutePl, uRouteMn, uRouteList):
   finalRouteWeight = 0
   for xBnB in range(0,len(finalRouteAll)-1):
     finalRouteWeight += uRouteList[finalRouteAll[xBnB]][finalRouteAll[xBnB+1]]
-  #finalRouteWeight = weightCalBnB(finalRouteAll,uRouteList)
+
   
   return finalRouteAll, finalRouteWeight
-  
-#c = branchnBound(tempArr,tempArrMoon, routeList)
-
-#print(c)
-#detert = nodeTree[nodeTree[nodeTree[lastNode].p[0]].p[0]].m
-#detert2 = nodeTree[nodeTree[lastNode].p[0]].m
-#print(c)
-#detert = nodeTree[list(nodeTree)[-1]].m
-#dp = nodeTree[list(nodeTree)[-1]].p
-#dp2 = nodeTree[1].p
-#print(dp2)
-#for v in detert:
-#  for el in v:
-#    print(str(el).rjust(6,' ')+' ', end = '')
-#  print(' ')

@@ -1,8 +1,9 @@
-import copy, NearNeighbour, ClarkeWright, Christofides, TwoOpts, KOpts, SimulatedAnnealing, BranchnBound
+import copy, NearNeighbour, ClarkeWright, Christofides, TwoOpts, KOpts, SimulatedAnnealing
+from BranchnBound import *
 import UniverseBuilder as u
 import timeit
 import importlib
-uniStore = u.uniBuilder()
+uniStore = u.uniBuilder(3)
 routeList = uniStore[0]
 #routeMarkerKeys = uniStore[3]
 routeMarkers = uniStore[1]
@@ -32,6 +33,7 @@ for moons in (moons for moons in hiarchy if hiarchy[moons].parent.startswith("Pl
     moonArray.append([routeMarkers[moons]])
 
   previousParent = hiarchy[moons].parent
+
 testNumber = 10
 nnTimes = []
 for a in range(0,testNumber):
@@ -123,26 +125,3 @@ for lines in range(0,len(saTimes)):
   avgLengthSa += saTimes[lines][1]
   avgTimeSa += saTimes[lines][2]
 print("SimAnneal: ".ljust(16,' ') + str(avgLengthSa/testNumber).ljust(10,' '), str((avgTimeSa/testNumber)*1000))
-
-#
-#d = BranchnBound.branchnBound(tempArr,tempArrMoon, routeList)
-#e = Christofides.christofides(tempArr,tempArrMoon,routeList)
-#f = ClarkeWright.clarkeWright(tempArr,tempArrMoon,routeList)
-#g = SimulatedAnnealing.simAnneal(listOfPlanets,tempArrMoon,routeList,7,4)
-#print("Near Neighbor: " + str(a))
-#print("TwoOpts: ".ljust(15,' ') + str(b))
-#print("KOpts: ".ljust(15,' ') + str(c))
-#print("BnB: ".ljust(15,' ') + str(d))
-#print("Christofides: ".ljust(15,' ') + str(e))
-#print("ClarkeWright: ".ljust(15,' ') + str(f))
-#print("SimAnneal: ".ljust(15,' ') + str(g))
-
-#for v in routeList:
-#  for el in v:
-#    print(str(el).rjust(6,' ')+' ', end = '')
-#  print(' ')
-#for kl in range(0,2):
-#  for lkj in range(0,len(routeList)):
-#    print('_', end = '')
-#print(" ")
-#print(routeMarkers)

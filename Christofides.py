@@ -1,4 +1,4 @@
-# This algorithm takes an array of routes between only the planets, 2d list of moons sorted into groups with the same parent, full route list.
+# This algorithm takes an array of routes between only the planets, 2d list of moons sorted into rows with the same parent, full route list.
 # Throughout the program are comments containing time complexities (as Big O notation) for a certain section or operation. 
   # These only occur when a section have a time complexity that isn't constant, as it is only these that will be taken into account when discussing run time.
   # When discussing time complexity, n = amount of moon inputs given to christofidesMoons, m = mst edges for moons, p = amount of planets, q = mst edges for planets 
@@ -161,7 +161,7 @@ def christofides(uRoutePlanets, uRouteMoons, uRouteList):
   # A Christofides heuristic is applied to the list of moons for each planet sector 
   for sectors in range(0,len(planets)): # O(p*n^3)
     moons = christofidesMoons(uRouteList,sectors,uRouteMoons[sectors]) # O(n^3)
-    finalRouteAll[finalRouteAll.index(sectors)+1:1] = moons # O(p+(p*n))
+    finalRouteAll[finalRouteAll.index(sectors)+1:1] = moons # O((p*n)+n) (worst case when the last array of moons is added to the end of the list)
   # A final route length is calculated from final route
   for length in range(1,len(finalRouteAll)): # O(p+(p*n))
     totalLength += uRouteList[finalRouteAll[length-1]][finalRouteAll[length]]
