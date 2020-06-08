@@ -1,4 +1,4 @@
-# This algorithm takes 3 arrays as input: array of only planet routes, 2d list of moons sorted into groups with the same parent, full route list.
+# This algorithm takes 3 arrays as input: array of only planet routes, 2d list of moons sorted into rows with the same parent, full route list.
   # Throughout the program are comments containing time complexities (as Big O notation) for a certain section or operation. 
   # These only occur when a section have a time complexity that isn't constant, as it is only these that will be taken into account when discussing run time.
   # When discussing time complexity, n = amount of moon inputs given to moonCalculations, m = total route combinations for moons, p = amount of planets, q = total route combinations for planets 
@@ -143,7 +143,7 @@ def clarkeWright (uRoutePlanets, uRouteMoons, uRouteList):
     result.extend([moonsCalculations(uRouteMoons,planetParent,uRouteList)])
     del degreeListMoon[:]
   
-  # Each edge is then added to the final result in order of starting location => node2, node2 => node3
+  # Each edge is then added to the final length in order of starting location => node2, node2 => node3, and the nodes are added to the final route
   location = 0
   cwRoute = [0]
   cwRoute.extend(result[0][1])
@@ -166,5 +166,6 @@ def clarkeWright (uRoutePlanets, uRouteMoons, uRouteList):
         break
   
   # O(p^2) + O(q log q) + O(2p*q^3 + 2p*q + p*q) + O(p^2) + O(p*n^3) + O(p^2*n) = O(2p*q^3) + O(p*n^3)
+  # Final route and length is returned
   return cwRoute, weight
 #print(clarkeWright(tempArr,tempArrMoon,routeList))
